@@ -6,7 +6,7 @@ RCONFLICTS:${PN} = "opensoar-testing"
 
 require openvario.inc
 
-SRC_URI = "git://github.com/OpenSoaring/OpenSoar.git;protocol=https;branch=master "
+SRC_URI = "git://github.com/OpenSoaring/OpenSoar.git;protocol=https;branch=work26"
 # OpenSoar 7.46.26 (Tag v7.46.26)
 # https://github.com/OpenSoaring/OpenSoar/releases/tag/v7.46.26
 SRCREV = "b2e745cfddfe0150f6ed7db467ac18c321b38d01"
