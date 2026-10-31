@@ -11,6 +11,7 @@ DEPENDS = "	\
 		librsvg-native \
 		imagemagick-native \
 		libinput \
+		libxkbcommon \
 		lua \
 		udev \
 		ttf-dejavu \
@@ -51,7 +52,6 @@ BOOST_URL = "https://archives.boost.io/release/${BOOST_VERSION}/source/${BOOST_F
 BOOST_HASH = "${BOOST_SHA256HASH}"
 BOOST_FILE = "boost_${@'${BOOST_VERSION}'.replace('.','_')}.tar.bz2"
 SRC_URI += " \
-	file://0007-Disable-touch-screen-auto-detection.patch \
 	${BOOST_URL};sha256sum=${BOOST_HASH};unpack=0 \
 "
 
@@ -70,7 +70,7 @@ EXTRA_OEMAKE = " \
 	STRIP='${STRIP}' \
 	CCACHE='' \
 	\
-	TARGET=OPENVARIO_CB2 \
+	TARGET=CUBIE2 \
 	DEBUG=n DEBUG_GLIBCXX=n \
 	ENABLE_MESA_KMS=y GLES2=y \
 	GEOTIFF=y \
