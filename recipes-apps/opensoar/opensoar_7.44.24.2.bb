@@ -7,10 +7,10 @@ RCONFLICTS:${PN} = "opensoar-testing"
 require openvario.inc
 
 SRC_URI = "git://github.com/OpenSoaring/OpenSoar.git;protocol=https;branch=master "
-# Announced release 7.44.24.2 has no upstream tag; pin its release commit.
+# Announced release 7.46.26 has no upstream tag; pin its release commit.
 # Release announcement: OpenSoar-News.md at the revision below.
 # https://github.com/OpenSoaring/OpenSoar/commit/e34b3dca3f63bf534c79657b22d181449350b9ca
-SRCREV = "e34b3dca3f63bf534c79657b22d181449350b9ca"
+SRCREV = "b2e745cfddfe0150f6ed7db467ac18c321b38d01"
 
 # This release's bundled Boost version.
 BOOST_VERSION = "1.90.0"
