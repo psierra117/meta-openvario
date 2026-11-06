@@ -8,6 +8,6 @@ S = "${WORKDIR}/git"
 inherit systemd
 
 SRC_URI = "git://github.com/Openvario/sensord.git;protocol=https;branch=master"
-SRCREV = "c6e07fdf3af6395ad6736363e1f60b7ff20bfc77"
+SRCREV = "0894d5f166ef7b015bcf35296291596002bd4618"
 
 require sensord.inc
