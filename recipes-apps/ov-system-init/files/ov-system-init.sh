@@ -98,20 +98,20 @@ mkdir -p "$DATADIR"
 if ! mountpoint -q "$DATADIR"; then
 	/usr/bin/psplash-message "Opening data storage..." 2>/dev/null || true
 	if ! mount /dev/mmcblk0p3 "$DATADIR"; then
-		# Try the repair tool when already installed; do not add a package
-		# solely for this temporary startup recovery policy.
-		if command -v e2fsck >/dev/null 2>&1; then
+		# Only a partition without any filesystem (freshly created by
+		# create_datapart.sh) may be formatted. An existing filesystem that
+		# fails to mount holds the user's flights and is never overwritten.
+		fstype=$(blkid -p -o value -s TYPE /dev/mmcblk0p3 2>/dev/null)
+		if [ -z "$fstype" ]; then
+			/usr/bin/psplash-message "Formatting data storage..." 2>/dev/null || true
+			echo "No filesystem on mmcblk0p3; formatting" >&2
+			mkfs.ext4 -F /dev/mmcblk0p3 || storage_failed "Failed to format mmcblk0p3"
+		else
 			/usr/bin/psplash-message "Repairing data storage..." 2>/dev/null || true
 			e2fsck -p /dev/mmcblk0p3 || true
 		fi
-		if ! mount /dev/mmcblk0p3 "$DATADIR"; then
-			# Availability takes priority here. A failed repair/mount can
-			# erase existing data; backups must live outside this partition.
-			/usr/bin/psplash-message "Formatting data storage..." 2>/dev/null || true
-			echo "Cannot mount data storage; formatting mmcblk0p3" >&2
-			mkfs.ext4 -F /dev/mmcblk0p3 || storage_failed "Failed to format mmcblk0p3"
-			mount /dev/mmcblk0p3 "$DATADIR" || storage_failed "Failed to mount mmcblk0p3"
-		fi
+		mount /dev/mmcblk0p3 "$DATADIR" ||
+			storage_failed "Cannot mount data storage ($fstype); data left untouched"
 	fi
 fi
 

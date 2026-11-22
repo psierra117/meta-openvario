@@ -13,8 +13,10 @@ inherit systemd
 
 RDEPENDS:${PN} = " \
 	bash \
+	e2fsprogs-e2fsck \
 	e2fsprogs-mke2fs \
 	e2fsprogs-resize2fs \
+	util-linux-blkid \
 	util-linux-partx \
 	udev \
 	ovmenu-ng-skripts \
