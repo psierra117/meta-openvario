@@ -6,7 +6,7 @@ LICENSE = "GPL-3.0-only"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/${LICENSE};md5=c79ff39f19dfec6d293b95dea7b07891"
 SECTION = "base/app"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 require ov-revision.inc
 
 inherit systemd
@@ -38,7 +38,7 @@ do_install() {
 	install -m 0755 ${S}/ov-system-init.sh ${D}${bindir}
 	install -m 0755 ${S}/create_datapart.sh ${D}${bindir}
 	install -d ${D}${systemd_unitdir}/system
-	install -m 0644 ${WORKDIR}/ov-system-init.service ${D}${systemd_unitdir}/system
+	install -m 0644 ${UNPACKDIR}/ov-system-init.service ${D}${systemd_unitdir}/system
 }
 
 SYSTEMD_SERVICE:${PN} = "ov-system-init.service"

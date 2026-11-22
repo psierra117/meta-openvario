@@ -13,7 +13,7 @@ SRC_URI = " \
 	file://touchscreen-calibration.tool \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 inherit allarch
 
@@ -22,9 +22,9 @@ RDEPENDS:${PN} = "ov-system-tools"
 do_install() {
 	install -d ${D}${libexecdir}/xcsoar/system-tools
 	for tool in sensor-calibration sensor-initialization system-information touchscreen-calibration; do
-		install -m 0755 ${WORKDIR}/$tool \
+		install -m 0755 ${UNPACKDIR}/$tool \
 			${D}${libexecdir}/xcsoar/system-tools/$tool
-		install -m 0644 ${WORKDIR}/$tool.tool \
+		install -m 0644 ${UNPACKDIR}/$tool.tool \
 			${D}${libexecdir}/xcsoar/system-tools/$tool.tool
 	done
 }

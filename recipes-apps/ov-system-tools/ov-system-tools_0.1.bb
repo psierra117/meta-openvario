@@ -8,7 +8,7 @@ SRC_URI = " \
 	file://touchscreen-calibration \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 inherit allarch
 
@@ -25,7 +25,7 @@ RDEPENDS:${PN} = " \
 do_install() {
 	install -d ${D}${libexecdir}/openvario
 	for tool in sensor-calibration system-info touchscreen-calibration; do
-		install -m 0755 ${WORKDIR}/$tool \
+		install -m 0755 ${UNPACKDIR}/$tool \
 			${D}${libexecdir}/openvario/$tool
 	done
 }

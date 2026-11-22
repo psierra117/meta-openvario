@@ -5,13 +5,13 @@ PR = "r2"
 
 SRC_URI = "file://sunxi4-ts.rules"    
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 inherit allarch
 
 do_install () {
     install -d ${D}${sysconfdir}/udev/rules.d/
-    install -m 0666 ${WORKDIR}/sunxi4-ts.rules  ${D}${sysconfdir}/udev/rules.d/
+    install -m 0666 ${UNPACKDIR}/sunxi4-ts.rules  ${D}${sysconfdir}/udev/rules.d/
 }    
 
 FILES:${PN} += " /etc/udev/rules.d/sunxi4-ts.rules"

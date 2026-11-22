@@ -1,8 +1,8 @@
 # Copyright (C) 2014 Unknow User <unknow@user.org>
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-PR="r1"
-RCONFLICTS:${PN}="xcsoar-testing"
+PR = "r1"
+RCONFLICTS:${PN} = "xcsoar-testing"
 
 SRC_URI = "git://github.com/XCSoar/XCSoar.git;protocol=https;branch=v7.46.x \
            file://0002-libinput-rotate-relative-mouse-motion-into-physical-.patch \

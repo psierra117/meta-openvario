@@ -14,7 +14,7 @@ require ov-revision.inc
 
 inherit allarch
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 SRC_URI = " \
 	file://ovmenu-recovery.sh \

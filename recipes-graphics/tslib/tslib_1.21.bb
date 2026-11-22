@@ -55,12 +55,12 @@ PACKAGECONFIG[galax] = "--enable-galax,--disable-galax"
 PACKAGECONFIG[debug] = "--enable-debug,--disable-debug"
 
 do_install:prepend() {
-    install -m 0644 ${WORKDIR}/ts.conf ${S}/etc/ts.conf
+    install -m 0644 ${UNPACKDIR}/ts.conf ${S}/etc/ts.conf
 }
 
 do_install:append() {
     install -d ${D}${sysconfdir}/profile.d/
-    install -m 0755 ${WORKDIR}/tslib.sh ${D}${sysconfdir}/profile.d/
+    install -m 0755 ${UNPACKDIR}/tslib.sh ${D}${sysconfdir}/profile.d/
 }
 
 RPROVIDES_tslib-conf = "libts-0.0-conf"

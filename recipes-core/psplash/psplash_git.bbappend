@@ -16,15 +16,15 @@ SRC_URI:append:rpi = " file://openvario-framebuf.conf"
 
 do_install:append() {
   install -d ${D}/opt/bin
-  install -m 0755 ${WORKDIR}/psplash-rotation ${D}/opt/bin/psplash-rotation
-  install -m 0755 ${WORKDIR}/psplash-stop ${D}/opt/bin/psplash-stop
+  install -m 0755 ${UNPACKDIR}/psplash-rotation ${D}/opt/bin/psplash-rotation
+  install -m 0755 ${UNPACKDIR}/psplash-stop ${D}/opt/bin/psplash-stop
   install -d ${D}${bindir}
-  install -m 0755 ${WORKDIR}/psplash-message ${D}${bindir}/psplash-message
+  install -m 0755 ${UNPACKDIR}/psplash-message ${D}${bindir}/psplash-message
 }
 
 do_install:append:rpi() {
   if [ "${@bb.utils.filter('DISTRO_FEATURES', 'systemd', d)}" ]; then
-    install -Dm 0644 ${WORKDIR}/openvario-framebuf.conf ${D}${systemd_system_unitdir}/psplash-start.service.d/framebuf.conf
+    install -Dm 0644 ${UNPACKDIR}/openvario-framebuf.conf ${D}${systemd_system_unitdir}/psplash-start.service.d/framebuf.conf
   fi
 }
 

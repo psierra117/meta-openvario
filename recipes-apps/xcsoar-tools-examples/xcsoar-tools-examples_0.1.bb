@@ -7,7 +7,7 @@ SRC_URI = " \
 	file://cpu-log.tool \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 inherit allarch
 
@@ -16,8 +16,8 @@ RDEPENDS:${PN} = "busybox systemd systemd-extra-utils"
 do_install() {
 	# The launcher seeds these defaults without replacing user files.
 	install -d -m 0755 ${D}${ROOT_HOME}/.xcsoar/tools
-	install -m 0755 ${WORKDIR}/cpu-log.sh ${D}${ROOT_HOME}/.xcsoar/tools/
-	install -m 0644 ${WORKDIR}/cpu-log.tool ${D}${ROOT_HOME}/.xcsoar/tools/
+	install -m 0755 ${UNPACKDIR}/cpu-log.sh ${D}${ROOT_HOME}/.xcsoar/tools/
+	install -m 0644 ${UNPACKDIR}/cpu-log.tool ${D}${ROOT_HOME}/.xcsoar/tools/
 }
 
 FILES:${PN} = "${ROOT_HOME}/.xcsoar/tools"

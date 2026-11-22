@@ -39,7 +39,6 @@ RDEPENDS:${PN} = "\
         variod \
 "
 
-S = "${WORKDIR}/git"
 
 LC_LOCALE_PATH = "${datadir}/locale"
 
@@ -78,7 +77,7 @@ EXTRA_OEMAKE = " \
 
 do_configure() {
 	install -d ${B}/output/download
-	cp ${WORKDIR}/${BOOST_FILE} ${B}/output/download/
+	cp ${UNPACKDIR}/${BOOST_FILE} ${B}/output/download/
 	oe_runmake boost
 }
 

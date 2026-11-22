@@ -7,7 +7,6 @@ LICENSE = "GPL-3.0-only"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/${LICENSE};md5=c79ff39f19dfec6d293b95dea7b07891"
 SECTION = "base/app"
 
-S = "${WORKDIR}/git"
 
 INSANE_SKIP:${PN} += "ldflags"
 
@@ -26,7 +25,7 @@ SRC_URI = "file://variod.service \
            file://variod.cfgmgr "
 
 do_compile() {
-	cd ${WORKDIR}/git
+	cd ${S}
 	oe_runmake clean
 	oe_runmake
 }
@@ -40,10 +39,10 @@ do_install() {
 	install -m 0755 ${S}/variod.conf ${D}/opt/conf
 	
 	install -d ${D}/etc/cfgmgr.d
-	install -m 0755 ${WORKDIR}/variod.cfgmgr ${D}/etc/cfgmgr.d/variod.cfgmgr
+	install -m 0755 ${UNPACKDIR}/variod.cfgmgr ${D}/etc/cfgmgr.d/variod.cfgmgr
 	
 	install -d ${D}${systemd_unitdir}/system
-	install -m 0644 ${WORKDIR}/variod.service ${D}${systemd_unitdir}/system
+	install -m 0644 ${UNPACKDIR}/variod.service ${D}${systemd_unitdir}/system
 }
 
 PACKAGES = "${PN}"

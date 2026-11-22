@@ -25,8 +25,8 @@ SRC_URI = " \
 do_install() {
   install -d ${D}/${systemd_unitdir}/system
   install -d ${D}/opt/bin
-  install -m 0644 ${WORKDIR}/fix_cpu_freq.service ${D}/${systemd_unitdir}/system
-  install -m 0755 ${WORKDIR}/fix_cpu_freq.sh ${D}/opt/bin
+  install -m 0644 ${UNPACKDIR}/fix_cpu_freq.service ${D}/${systemd_unitdir}/system
+  install -m 0755 ${UNPACKDIR}/fix_cpu_freq.sh ${D}/opt/bin
 }
 
 SYSTEMD_AUTO_ENABLE = "enable"

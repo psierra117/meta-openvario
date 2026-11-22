@@ -12,7 +12,7 @@ SRC_URI = " \
 "
 SRC_URI[sha256sum] = "e3fe3d2ec06c1c2772555bf1208d220aab5fee186d04bd265219b0bc7a978edc"
 
-S = "${WORKDIR}/netcdf-cxx4-${PV}"
+S = "${UNPACKDIR}/netcdf-cxx4-${PV}"
 
 # Autotools produces libnetcdf_c++4, matching OpenSoar's system-library path.
 # It also avoids CMake's unconditional HDF5 lookup for our classic-only build.

@@ -73,8 +73,8 @@ build_uboot_logos2() {
 	_LANDSCAPE_HEIGHT=$(echo "$_HEIGHT * 2 / 3" | bc)
 	_PORTRAIT_WIDTH=$(echo "$_HEIGHT * 9 / 10" | bc)
 
-	${RSVG_CONVERT} -h $_LANDSCAPE_HEIGHT -o ${B}/$_SIZE/landscape.png "${WORKDIR}/${LOGO_FILE}"
-	${RSVG_CONVERT} -w $_PORTRAIT_WIDTH -o ${B}/$_SIZE/portrait.png "${WORKDIR}/${LOGO_FILE}"
+	${RSVG_CONVERT} -h $_LANDSCAPE_HEIGHT -o ${B}/$_SIZE/landscape.png "${UNPACKDIR}/${LOGO_FILE}"
+	${RSVG_CONVERT} -w $_PORTRAIT_WIDTH -o ${B}/$_SIZE/portrait.png "${UNPACKDIR}/${LOGO_FILE}"
 
 	build_uboot_logos1 ov_booting $_WIDTH $_HEIGHT "${BOOT_TEXT}"
 	build_uboot_logos1 ov_recover $_WIDTH $_HEIGHT "${RECOVER_TEXT}"

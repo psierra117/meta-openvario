@@ -64,16 +64,16 @@ do_install () {
         install
     install -d ${D}${libdir}/pkgconfig
 
-    sed -e s/@VERSION@/${PV}/ ${WORKDIR}/lua.pc.in > ${WORKDIR}/lua.pc
-    sed -e s/@VERSION@/${PV}/ ${WORKDIR}/lua.pc.in > ${WORKDIR}/lua5.4.pc
-    install -m 0644 ${WORKDIR}/lua.pc ${D}${libdir}/pkgconfig/
-    install -m 0644 ${WORKDIR}/lua5.4.pc ${D}${libdir}/pkgconfig/
+    sed -e s/@VERSION@/${PV}/ ${UNPACKDIR}/lua.pc.in > ${UNPACKDIR}/lua.pc
+    sed -e s/@VERSION@/${PV}/ ${UNPACKDIR}/lua.pc.in > ${UNPACKDIR}/lua5.4.pc
+    install -m 0644 ${UNPACKDIR}/lua.pc ${D}${libdir}/pkgconfig/
+    install -m 0644 ${UNPACKDIR}/lua5.4.pc ${D}${libdir}/pkgconfig/
     rmdir ${D}${datadir}/lua/5.4
     rmdir ${D}${datadir}/lua
 }
 
 do_install_ptest () {
-        cp -R --no-dereference --preserve=mode,links -v ${WORKDIR}/lua-${PV_testsuites}-tests ${D}${PTEST_PATH}/test
+        cp -R --no-dereference --preserve=mode,links -v ${UNPACKDIR}/lua-${PV_testsuites}-tests ${D}${PTEST_PATH}/test
 }
 
 BBCLASSEXTEND = "native nativesdk"

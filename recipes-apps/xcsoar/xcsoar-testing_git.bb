@@ -2,7 +2,7 @@
 # Released under the MIT license (see COPYING.MIT for the terms)
 
 PR = "r14"
-RCONFLICTS:${PN}="xcsoar"
+RCONFLICTS:${PN} = "xcsoar"
 
 SRCREV:pn-xcsoar-testing = "${AUTOREV}" 
 
@@ -32,7 +32,7 @@ do_install:append() {
 	install -m755 ${S}/output/UNIX/bin/OpenVarioMenu ${D}${bindir}
 
 	install -d ${D}${systemd_unitdir}/system
-	install -m644 ${WORKDIR}/ovmenu-x.service ${D}${systemd_unitdir}/system
+	install -m644 ${UNPACKDIR}/ovmenu-x.service ${D}${systemd_unitdir}/system
 }
 
 FILES:ovmenu-x += "${bindir}/OpenVarioMenu"

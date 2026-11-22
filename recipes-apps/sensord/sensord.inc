@@ -7,7 +7,6 @@ DEPENDS = ""
 
 INSANE_SKIP:${PN} += "ldflags"
 
-S = "${WORKDIR}/git"
 
 inherit systemd
 
@@ -30,10 +29,10 @@ do_install() {
 	install -m 0755 ${S}/sensord.conf ${D}/opt/conf/sensord.conf
 
 	install -d ${D}${bindir}
-	install -m 0755 ${WORKDIR}/sensord-hw-present.sh ${D}${bindir}/sensord-hw-present.sh
+	install -m 0755 ${UNPACKDIR}/sensord-hw-present.sh ${D}${bindir}/sensord-hw-present.sh
 
 	install -d ${D}${systemd_unitdir}/system
-	install -m 0644 ${WORKDIR}/sensord.service ${D}${systemd_unitdir}/system
+	install -m 0644 ${UNPACKDIR}/sensord.service ${D}${systemd_unitdir}/system
 }
 
 PACKAGES = "${PN}"

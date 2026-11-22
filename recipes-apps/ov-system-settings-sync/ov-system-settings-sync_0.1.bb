@@ -6,7 +6,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 SECTION = "base/app"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 require ov-revision.inc
 
 inherit systemd
@@ -26,9 +26,9 @@ do_install() {
 	install -d ${D}${bindir}
 	install -m 0755 ${S}/sync-display-config.sh ${D}${bindir}
 	install -d ${D}${systemd_unitdir}/system
-	install -m 0644 ${WORKDIR}/sync-display-config.service ${D}${systemd_unitdir}/system
-	install -m 0644 ${WORKDIR}/sync-display-config.timer ${D}${systemd_unitdir}/system
-	install -m 0644 ${WORKDIR}/save-display-config.service ${D}${systemd_unitdir}/system
+	install -m 0644 ${UNPACKDIR}/sync-display-config.service ${D}${systemd_unitdir}/system
+	install -m 0644 ${UNPACKDIR}/sync-display-config.timer ${D}${systemd_unitdir}/system
+	install -m 0644 ${UNPACKDIR}/save-display-config.service ${D}${systemd_unitdir}/system
 }
 
 SYSTEMD_SERVICE:${PN} = "sync-display-config.timer save-display-config.service"

@@ -12,7 +12,6 @@ DEPENDS = " libinput "
 
 INSANE_SKIP:${PN} = "ldflags"
 
-S = "${WORKDIR}/git"
 
 #  old uri: SRC_URI = "git://git-ro.openvario.org/ovmenu.git;protocol=http;branch=master;rev=master"
 SRC_URI = "git://github.com/Openvario/caltool.git;protocol=https;branch=master " 

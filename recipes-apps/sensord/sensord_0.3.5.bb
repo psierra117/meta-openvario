@@ -3,7 +3,6 @@
 
 PR = "r1"
 
-S = "${WORKDIR}/git"
 
 inherit systemd
 

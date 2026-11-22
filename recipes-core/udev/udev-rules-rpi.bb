@@ -9,6 +9,6 @@ SRC_URI:append:rpi = " \
 
 do_install:rpi () {
     install -d ${D}${sysconfdir}/udev/rules.d
-    install -m 0644 ${WORKDIR}/backlight.rules ${D}${sysconfdir}/udev/rules.d/
-    install -m 0644 ${WORKDIR}/81-backlight.rules ${D}${sysconfdir}/udev/rules.d/
+    install -m 0644 ${UNPACKDIR}/backlight.rules ${D}${sysconfdir}/udev/rules.d/
+    install -m 0644 ${UNPACKDIR}/81-backlight.rules ${D}${sysconfdir}/udev/rules.d/
 }

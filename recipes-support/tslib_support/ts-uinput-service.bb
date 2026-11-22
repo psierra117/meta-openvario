@@ -9,7 +9,7 @@ SECTION = "base/app"
 DEPENDS = "tslib"
 PR = "r2"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 inherit allarch systemd
 
@@ -19,10 +19,10 @@ SRC_URI = "	file://ts_uinput.service \
 
 do_install() {	
 	install -d ${D}${systemd_unitdir}/system
-	install -m 0644 ${WORKDIR}/ts_uinput.service ${D}${systemd_unitdir}/system
+	install -m 0644 ${UNPACKDIR}/ts_uinput.service ${D}${systemd_unitdir}/system
 
 	install -d ${D}${sysconfdir}
-	install -m 0666 ${WORKDIR}/ts.env  ${D}${sysconfdir}	
+	install -m 0666 ${UNPACKDIR}/ts.env  ${D}${sysconfdir}	
 }
 
 

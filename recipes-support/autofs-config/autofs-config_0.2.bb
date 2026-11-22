@@ -31,11 +31,11 @@ do_compile() {
 do_install() {
 	install -d ${D}${systemd_unitdir}/system
 	install -m 0644 \
-		${WORKDIR}/dev-sda1.device \
-		${WORKDIR}/boot.mount \
-		${WORKDIR}/boot.automount \
-		${WORKDIR}/usb-usbstick.mount \
-		${WORKDIR}/usb-usbstick.automount \
+		${UNPACKDIR}/dev-sda1.device \
+		${UNPACKDIR}/boot.mount \
+		${UNPACKDIR}/boot.automount \
+		${UNPACKDIR}/usb-usbstick.mount \
+		${UNPACKDIR}/usb-usbstick.automount \
 		${D}${systemd_unitdir}/system
 }
 

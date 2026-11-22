@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 
 SRC_URI = "file://10-openvario-wifi.link"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 inherit allarch
 
@@ -13,7 +13,7 @@ RDEPENDS:${PN} = "udev"
 
 do_install() {
 	install -d ${D}${systemd_unitdir}/network
-	install -m 0644 ${WORKDIR}/10-openvario-wifi.link \
+	install -m 0644 ${UNPACKDIR}/10-openvario-wifi.link \
 		${D}${systemd_unitdir}/network/10-openvario-wifi.link
 }
 

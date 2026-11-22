@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://COPYRIGHT;md5=cbb22cd5ded182bbd11d88ea19479b58"
 SRC_URI = "https://github.com/Unidata/netcdf-c/archive/refs/tags/v${PV}.tar.gz"
 SRC_URI[sha256sum] = "ce160f9c1483b32d1ba8b7633d7984510259e4e439c48a218b95a023dc02fd4c"
 
-S = "${WORKDIR}/netcdf-c-${PV}"
+S = "${UNPACKDIR}/netcdf-c-${PV}"
 
 DEPENDS = "zlib"
 

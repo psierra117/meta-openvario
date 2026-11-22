@@ -1,4 +1,4 @@
-DESCRIPTION="Upstream's U-boot configured for sunxi devices (openvario-cubiebord2)"
+DESCRIPTION = "Upstream's U-boot configured for sunxi devices (openvario-cubiebord2)"
 
 # ====================================================================================================
 # This part is a adapted copy from layer meta-sunx/recipes-bsb/u-boot/u-boot_%.bbappend
@@ -15,7 +15,7 @@ COMPATIBLE_MACHINE:sunxi = "(sun4i|sun5i|sun7i|sun8i|sun50i)"
 
 # DEFAULT_PREFERENCE-sun4i="1"
 # DEFAULT_PREFERENCE-sun5i="1"
-DEFAULT_PREFERENCE-sun7i="1"
+DEFAULT_PREFERENCE:sun7i = "1"
 # DEFAULT_PREFERENCE-sun8i="1"
 # DEFAULT_PREFERENCE-sun50i="1"
 
@@ -31,7 +31,7 @@ EXTRA_OEMAKE:append = ' HOSTLDSHARED="${BUILD_CC} -shared ${BUILD_LDFLAGS} ${BUI
 # sun50i: do_compile-sun50i[depends] += "atf-sunxi:do_deploy"
 
 do_compile:append:cubieboard2() {
-    ${B}/tools/mkimage -C none -A arm -T script -d ${WORKDIR}/boot.cmd ${WORKDIR}/${UBOOT_ENV_BINARY}
+    ${B}/tools/mkimage -C none -A arm -T script -d ${UNPACKDIR}/boot.cmd ${UNPACKDIR}/${UBOOT_ENV_BINARY}
 }
 # ====================================================================================================
 # Add the files folder to the saerch path:
@@ -63,31 +63,31 @@ do_bootenv() {
 
 do_bootenv:append:cubieboard2() {
 	echo '#define BOOTENV \' >>${S}/include/config_distro_bootcmd.h
-	${PYTHON} ${WORKDIR}/ini2c.py <${WORKDIR}/bootenv.ini >>${S}/include/config_distro_bootcmd.h
+	${PYTHON} ${UNPACKDIR}/ini2c.py <${UNPACKDIR}/bootenv.ini >>${S}/include/config_distro_bootcmd.h
 }
 
 addtask do_bootenv after do_unpack before do_configure
 do_bootenv[depends] += "python3-native:do_populate_sysroot"
 
 do_compile:append:cubieboard2() {
-	DISPLAY=$(perl -ne '/^CONFIG_VIDEO_LCD_MODE="x:(\d+),y:(\d+)/ && print "$1x$2"' ${WORKDIR}/per_machine.cfg)
+	DISPLAY=$(perl -ne '/^CONFIG_VIDEO_LCD_MODE="x:(\d+),y:(\d+)/ && print "$1x$2"' ${UNPACKDIR}/per_machine.cfg)
 	test -n "$DISPLAY"
-	install ${RECIPE_SYSROOT}${datadir}/openvario/u-boot/$DISPLAY/ov_*_?.bmp ${WORKDIR}
+	install ${RECIPE_SYSROOT}${datadir}/openvario/u-boot/$DISPLAY/ov_*_?.bmp ${UNPACKDIR}
 }
 
 do_compile[depends] += "perl-native:do_populate_sysroot openvario-logo:do_populate_sysroot"
 
 do_install:append:cubieboard2() {
-	install -m 644 -D ${WORKDIR}/ov_*.bmp ${D}/boot
-	install -m 644 -D ${WORKDIR}/config.uEnv ${D}/boot
-	cat ${WORKDIR}/font.env >>${D}/boot/config.uEnv
+	install -m 644 -D ${UNPACKDIR}/ov_*.bmp ${D}/boot
+	install -m 644 -D ${UNPACKDIR}/config.uEnv ${D}/boot
+	cat ${UNPACKDIR}/font.env >>${D}/boot/config.uEnv
 	echo fdtfile=${KERNEL_DEVICETREE} >>${D}/boot/config.uEnv
 }
 
 do_deploy:append:cubieboard2() {
 	install -d ${DEPLOYDIR}/pics
-	install -m 644 -D ${WORKDIR}/ov_*.bmp ${DEPLOYDIR}/pics
-	install -m 644 -D ${WORKDIR}/config.uEnv ${DEPLOYDIR}
-	cat ${WORKDIR}/font.env >>${DEPLOYDIR}/config.uEnv
+	install -m 644 -D ${UNPACKDIR}/ov_*.bmp ${DEPLOYDIR}/pics
+	install -m 644 -D ${UNPACKDIR}/config.uEnv ${DEPLOYDIR}
+	cat ${UNPACKDIR}/font.env >>${DEPLOYDIR}/config.uEnv
 	echo fdtfile=${KERNEL_DEVICETREE} >>${DEPLOYDIR}/config.uEnv
 }

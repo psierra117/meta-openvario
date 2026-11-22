@@ -39,7 +39,6 @@ RDEPENDS:${PN} = "\
         ttf-dejavu-sans-mono \
 "
 
-S = "${WORKDIR}/git"
 
 SRC_URI += "file://0001-zxing-use-system-library-on-linux.patch"
 
@@ -78,7 +77,7 @@ EXTRA_OEMAKE = " \
 
 do_configure() {
 	install -d ${B}/output/download
-	cp ${WORKDIR}/${BOOST_FILE} ${B}/output/download/
+	cp ${UNPACKDIR}/${BOOST_FILE} ${B}/output/download/
 	oe_runmake boost
 }
 

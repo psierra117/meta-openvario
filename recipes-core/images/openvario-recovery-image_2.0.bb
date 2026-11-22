@@ -8,7 +8,9 @@ require ov-revision.inc
 
 inherit deploy
 
-S = "${WORKDIR}/${PN}-${PV}"
+S = "${UNPACKDIR}"
+# The ITB is assembled in ${B}; S only holds the .its source.
+B = "${WORKDIR}/build"
 
 SRC_URI = "\
         file://openvario-recovery.its \
@@ -30,18 +32,18 @@ do_compile[deptask] = "do_rm_work"
 
 ## the next line can be toggled between new and old!
 do_configure () {
-	cp ${WORKDIR}/openvario-recovery.its ${S}
+	cp ${UNPACKDIR}/openvario-recovery.its ${B}/
 	#new image
-	dd if=${DEPLOY_DIR_IMAGE}/uImage of=${S}/Image bs=64 skip=1
+	dd if=${DEPLOY_DIR_IMAGE}/uImage of=${B}/Image bs=64 skip=1
     # Accept both the stable deploy symlink and the versioned rootfs artifact name.
     if [ -f ${DEPLOY_DIR_IMAGE}/openvario-base-initramfs-${MACHINE}.rootfs.cpio.gz ]; then
-        cp -v ${DEPLOY_DIR_IMAGE}/openvario-base-initramfs-${MACHINE}.rootfs.cpio.gz ${S}/initramfs.cpio.gz
+        cp -v ${DEPLOY_DIR_IMAGE}/openvario-base-initramfs-${MACHINE}.rootfs.cpio.gz ${B}/initramfs.cpio.gz
     elif [ -f ${DEPLOY_DIR_IMAGE}/openvario-base-initramfs-${MACHINE}.cpio.gz ]; then
-        cp -v ${DEPLOY_DIR_IMAGE}/openvario-base-initramfs-${MACHINE}.cpio.gz ${S}/initramfs.cpio.gz
+        cp -v ${DEPLOY_DIR_IMAGE}/openvario-base-initramfs-${MACHINE}.cpio.gz ${B}/initramfs.cpio.gz
     else
         bbfatal "Missing initramfs artifact for ${MACHINE} in ${DEPLOY_DIR_IMAGE}"
     fi
-        cp -v ${DEPLOY_DIR_IMAGE}/${MACHINE}.dtb ${S}/openvario.dtb
+        cp -v ${DEPLOY_DIR_IMAGE}/${MACHINE}.dtb ${B}/openvario.dtb
 }
 
 # do_compile () {
@@ -53,13 +55,14 @@ do_mkimage () {
     MK_IMAGE=mkimage
     $MK_IMAGE -V
     # Build ITB with provided config
-    $MK_IMAGE -A arm -f ${S}/openvario-recovery.its ${S}/ov-recovery.itb
+    $MK_IMAGE -A arm -f ${B}/openvario-recovery.its ${B}/ov-recovery.itb
 }
 
 addtask mkimage after do_configure before do_install
 
 do_deploy() {
-    install -Dm0644 ${S}/ov-recovery.itb ${DEPLOYDIR}/ov-recovery.itb
+    install -Dm0644 ${B}/ov-recovery.itb ${DEPLOYDIR}/ov-recovery.itb
 }
 
 addtask deploy after do_mkimage before do_build
+do_mkimage[dirs] = "${B}"
