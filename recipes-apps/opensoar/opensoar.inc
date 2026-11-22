@@ -49,10 +49,18 @@ PACKAGES:remove = "${PN}-locale"
 BOOST_URL = "https://archives.boost.io/release/${BOOST_VERSION}/source/${BOOST_FILE}"
 BOOST_HASH = "${BOOST_SHA256HASH}"
 BOOST_FILE = "boost_${@'${BOOST_VERSION}'.replace('.','_')}.tar.bz2"
+# Release-specific patches; OpenSoar >= 7.46 has the touch-screen default
+# built in, older trees still need patch 0007.
+OPENSOAR_PATCHES ?= "file://0007-Disable-touch-screen-auto-detection.patch"
 SRC_URI += " \
-	file://0007-Disable-touch-screen-auto-detection.patch \
+	${OPENSOAR_PATCHES} \
 	${BOOST_URL};sha256sum=${BOOST_HASH};unpack=0 \
 "
+
+# OpenSoar <= 7.44 has the OPENVARIO_CB2 target. Newer trees name the
+# device target CUBIE2, which also adds "-isystem /usr/include" for SDK
+# builds; a release recipe can instead pass the device variables directly.
+OPENSOAR_TARGET ?= "TARGET=OPENVARIO_CB2"
 
 inherit pkgconfig
 addtask do_package_write_ipk after do_package
@@ -69,7 +77,7 @@ EXTRA_OEMAKE = " \
 	STRIP='${STRIP}' \
 	CCACHE='' \
 	\
-	TARGET=OPENVARIO_CB2 \
+	${OPENSOAR_TARGET} \
 	DEBUG=n DEBUG_GLIBCXX=n \
 	ENABLE_MESA_KMS=y GLES2=y \
 	GEOTIFF=y \
