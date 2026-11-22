@@ -13,9 +13,10 @@ python () {
         if not layerdir:
             raise RuntimeError("OPENVARIO_LAYERDIR is not set")
         
-        # Tags are 5.<sequential>.<fix> and contain no dash: 5 is
-        # Scarthgap, the second number the release, the third the
-        # bugfix. A pre-release uses an underscore (5.0.9_PRE1).
+        # Tags are <major>.<sequential>.<fix> and contain no dash: the
+        # major number is the Yocto base (5 = Scarthgap, 6 = Wrynose),
+        # the second number the release, the third the bugfix. A
+        # pre-release uses an underscore (6.0.0_PRE1).
         # git describe is copied into IMAGE_NAME, and fw-upgrade.sh
         # splits that name on "-CB2-".
         version = subprocess.check_output(
