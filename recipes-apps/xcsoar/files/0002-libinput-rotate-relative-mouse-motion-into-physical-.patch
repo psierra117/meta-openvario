@@ -1,0 +1,126 @@
+From def15c49e0ce5da8d2ed992da688b867479221dd Mon Sep 17 00:00:00 2001
+From: psierra117 <psierra117@users.noreply.github.com>
+Date: Sun, 22 Nov 2026 19:31:04 +0100
+Subject: [PATCH] libinput: rotate relative mouse motion into physical
+ coordinates
+
+With XCSOAR_KMS_INPUT_TRANSFORM=xcsoar, LibInputHandler keeps the
+pointer position in physical screen coordinates and rotates it into
+the logical (XCSoar-rotated) screen in GetPosition(). Absolute touch
+coordinates are physical, so touch is correct. Relative mouse deltas
+however are added to the physical position unrotated, so after the
+rotation in GetPosition() the mouse moves in the wrong direction in
+portrait and reverse orientations.
+
+Rotate the relative deltas from the logical into the physical frame
+(the inverse of TransformInputPointForMode()) before accumulating.
+
+Upstream-Status: Pending
+---
+ src/ui/event/poll/libinput/InputTransform.hpp | 37 ++++++++++++
+ .../event/poll/libinput/LibInputHandler.cpp   | 19 +++++-
+ .../event/poll/libinput/LibInputHandler.hpp   |  2 +
+ 3 files changed, 56 insertions(+), 2 deletions(-)
+
+diff --git a/src/ui/event/poll/libinput/InputTransform.hpp b/src/ui/event/poll/libinput/InputTransform.hpp
+index 1fb4d6a..06628da 100644
+--- a/src/ui/event/poll/libinput/InputTransform.hpp
++++ b/src/ui/event/poll/libinput/InputTransform.hpp
+@@ -45,6 +45,43 @@ TransformInputPointForMode(PixelPoint p, PixelSize screen_size,
+   return p;
+ }
+ 
++/**
++ * Convert a relative pointer movement (e.g. from a mouse), which the user
++ * performs in the rotated (logical) screen, to a movement in physical screen
++ * coordinates.  This is the inverse of TransformInputPointForMode() applied
++ * to a delta, so the pointer follows the mouse in every orientation.
++ */
++inline void
++TransformInputDeltaForMode(double &dx, double &dy,
++                           DisplayOrientation orientation,
++                           InputTransformMode mode) noexcept
++{
++  if (mode == InputTransformMode::SYSTEM_ROTATED)
++    return;
++
++  const double lx = dx, ly = dy;
++  switch (TranslateDefaultDisplayOrientation(orientation)) {
++  case DisplayOrientation::DEFAULT:
++  case DisplayOrientation::LANDSCAPE:
++    return;
++
++  case DisplayOrientation::PORTRAIT:
++    dx = ly;
++    dy = -lx;
++    return;
++
++  case DisplayOrientation::REVERSE_LANDSCAPE:
++    dx = -lx;
++    dy = -ly;
++    return;
++
++  case DisplayOrientation::REVERSE_PORTRAIT:
++    dx = -ly;
++    dy = lx;
++    return;
++  }
++}
++
+ [[gnu::pure]]
+ inline PixelSize
+ GetLogicalInputSizeForMode(PixelSize screen_size,
+diff --git a/src/ui/event/poll/libinput/LibInputHandler.cpp b/src/ui/event/poll/libinput/LibInputHandler.cpp
+index 77cc998..fb3a161 100644
+--- a/src/ui/event/poll/libinput/LibInputHandler.cpp
++++ b/src/ui/event/poll/libinput/LibInputHandler.cpp
+@@ -101,6 +101,16 @@ LibInputHandler::MaybeTransformPoint(PixelPoint p) const noexcept
+   return p;
+ }
+ 
++void
++LibInputHandler::MaybeTransformDelta([[maybe_unused]] double &dx,
++                                     [[maybe_unused]] double &dy) const noexcept
++{
++#if defined(ENABLE_OPENGL) && defined(SOFTWARE_ROTATE_DISPLAY)
++  TransformInputDeltaForMode(dx, dy, display_orientation,
++                             input_transform_mode);
++#endif
++}
++
+ LibInputHandler::LibInputHandler(EventQueue &_queue) noexcept
+   :queue(_queue),
+    fd(queue.GetEventLoop(), BIND_THIS_METHOD(OnSocketReady)),
+@@ -283,9 +293,14 @@ LibInputHandler::HandleEvent(struct libinput_event *li_event) noexcept
+         x = 0.0;
+       if (-1.0 == y)
+         y = 0.0;
+-      x += libinput_event_pointer_get_dx(ptr_li_event);
++      /* x/y are physical screen coordinates; the mouse moves in the
++         rotated screen the user sees */
++      double dx = libinput_event_pointer_get_dx(ptr_li_event);
++      double dy = libinput_event_pointer_get_dy(ptr_li_event);
++      MaybeTransformDelta(dx, dy);
++      x += dx;
+       x = std::clamp<double>(x, 0, screen_size.width);
+-      y += libinput_event_pointer_get_dy(ptr_li_event);
++      y += dy;
+       y = std::clamp<double>(y, 0, screen_size.height);
+       queue.Purge(Event::MOUSE_MOTION);
+       queue.Push(Event(Event::MOUSE_MOTION, GetPosition()));
+diff --git a/src/ui/event/poll/libinput/LibInputHandler.hpp b/src/ui/event/poll/libinput/LibInputHandler.hpp
+index f7ab6be..28dacd4 100644
+--- a/src/ui/event/poll/libinput/LibInputHandler.hpp
++++ b/src/ui/event/poll/libinput/LibInputHandler.hpp
+@@ -122,6 +122,8 @@ private:
+   [[gnu::pure]]
+   PixelPoint MaybeTransformPoint(PixelPoint p) const noexcept;
+ 
++  void MaybeTransformDelta(double &dx, double &dy) const noexcept;
++
+   int OpenDevice(const char *path, int flags) noexcept;
+   void CloseDevice(int fd) noexcept;
+ 
+-- 
+2.43.0
+
