@@ -17,5 +17,5 @@ FILES:${PN}-server += " ${systemd_unitdir}/system/pulseaudio.service "
 
 do_install:append() {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${B}/../pulseaudio.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/pulseaudio.service ${D}${systemd_unitdir}/system
 }
