@@ -39,7 +39,8 @@ EXTRA_OECMAKE = " \
 # nc-config and the build settings are development metadata, not runtime
 # payload. Keeping them out of the library package also avoids a shell runtime
 # dependency solely for nc-config.
+require netcdf-buildpaths.inc
+
 FILES:${PN}-dev += " \
     ${bindir}/nc-config \
-    ${libdir}/libnetcdf.settings \
 "

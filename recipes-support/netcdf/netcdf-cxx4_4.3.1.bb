@@ -24,7 +24,8 @@ EXTRA_OECONF = " \
 "
 
 # Keep build helpers and settings in the development package.
+require netcdf-buildpaths.inc
+
 FILES:${PN}-dev += " \
     ${bindir}/ncxx4-config \
-    ${libdir}/libnetcdf-cxx.settings \
 "
