@@ -151,6 +151,21 @@ function configure_variod_for_app() {
     esac
 }
 
+# Ask for confirmation, then reboot or power off.
+# $1: systemctl verb (reboot|poweroff), $2: text shown to the user.
+# Returns to the caller (and thus to the menu) when the user declines.
+function confirm_power_action() {
+    dialog --backtitle "OpenVario" --defaultno \
+            --title "[ $2 ]" \
+            --yesno "$2 the OpenVario now?" 7 40 || return 1
+    clear
+    echo "$2..."
+    sync
+    systemctl "$1"
+    # Give systemd time to stop the menu instead of redrawing it.
+    sleep 30
+}
+
 # App selector dialog - lets the user pick an app or drop to a shell.
 # If a new app is selected, persist it and re-exec the dispatcher.
 function select_app() {
@@ -174,15 +189,19 @@ function select_app() {
     dialog --nocancel --backtitle "OpenVario" \
             --title "[ Application ]" \
             --begin 3 4 \
-            --menu "Select application:" 12 50 3 \
+            --menu "Select application:" 14 50 5 \
             OpenSoar  "Start OpenSoar" \
             XCSoar    "Start XCSoar" \
-            Terminal  "Go to terminal" 2>"${INPUT}"
+            Terminal  "Go to terminal" \
+            Reboot    "Restart the OpenVario" \
+            Shutdown  "Power off the OpenVario" 2>"${INPUT}"
 
     local choice=$(<"${INPUT}")
 
     case "$choice" in
         Terminal) do_shell; return ;;
+        Reboot)   confirm_power_action reboot "Restart"; return ;;
+        Shutdown) confirm_power_action poweroff "Power off"; return ;;
         OpenSoar) local new_app="OpenSoar" ;;
         XCSoar)   local new_app="xcsoar" ;;
         *)        do_shell; return ;;
