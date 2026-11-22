@@ -22,7 +22,16 @@ SDIMG_ROOTFS_TYPE ?= "ext4"
 IMAGE_TYPEDEP:openvario-sdimg = "${SDIMG_ROOTFS_TYPE}"
 
 # Boot partition sdcard volume id (not longer then 11 characters!)
-BOOTDD_VOLUME_ID = "OV-${SHORT_OV_MACHINE}"
+# FAT labels are limited to 11 characters (mkfs.vfat from dosfstools 4.2
+# rejects longer ones). Keep "OV-<SHORT_OV_MACHINE>" where it fits and drop
+# the board prefix otherwise, e.g. OV-CB2-CH57s -> OV-CH57s.
+def ov_boot_label(d):
+    label = 'OV-' + d.getVar('SHORT_OV_MACHINE')
+    if len(label) > 11:
+        label = 'OV-' + d.getVar('SHORT_OV_MACHINE').replace('CB2-', '')
+    return label[:11]
+
+BOOTDD_VOLUME_ID = "${@ov_boot_label(d)}"
 
 # Boot partition size [in KiB] (0xA000)
 BOOT_SPACE ?= "40960"
