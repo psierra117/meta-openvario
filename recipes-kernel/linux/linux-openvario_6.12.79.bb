@@ -5,6 +5,10 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 PR = "1"
 
+# 6.18 LTS (the Wrynose kernel series) is the default. Select this recipe
+# with PREFERRED_VERSION_linux-openvario = "6.12%" in local.conf.
+DEFAULT_PREFERENCE = "-1"
+
 inherit kernel kernel-yocto siteinfo
 
 
