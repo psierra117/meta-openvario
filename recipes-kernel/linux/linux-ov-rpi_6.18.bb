@@ -1,17 +1,12 @@
-DESCRIPTION = "Linux Kernel for Openvario Raspberry Pi (6.18 LTS, opt-in)"
+DESCRIPTION = "Linux Kernel for Openvario Raspberry Pi (6.18 LTS)"
 SECTION = "kernel"
 LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
-# 6.12 stays the default kernel. Select this one per build with
-#   PREFERRED_VERSION_linux-ov-rpi = "6.18%"
-# in conf/local.conf.
-DEFAULT_PREFERENCE = "-1"
-
 COMPATIBLE_MACHINE ?= "^rpi$"
 
 PE = "1"
-PV = "${LINUX_VERSION}+git${SRCPV}"
+PV = "${LINUX_VERSION}+git"
 
 LINUX_VERSION ?= "6.18.64"
 LINUX_RPI_BRANCH ?= "rpi-6.18.y"
@@ -20,11 +15,13 @@ LINUX_RPI_KMETA_BRANCH ?= "yocto-6.18"
 SRCREV_machine = "a40f735325391b1705161b07f36ed45e1bf04521"
 SRCREV_meta = "a5384458147b581e6beac32ee5cec4e4422d58b1"
 
+KMETA = "kernel-meta"
+
 inherit siteinfo
 require recipes-kernel/linux/linux-yocto.inc
 
 SRC_URI = "git://github.com/raspberrypi/linux.git;name=machine;branch=${LINUX_RPI_BRANCH};protocol=https \
-           git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=${LINUX_RPI_KMETA_BRANCH};destsuffix=kernel-meta;protocol=https \
+           git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=${LINUX_RPI_KMETA_BRANCH};destsuffix=${KMETA};protocol=https \
            file://powersave.cfg \
            file://lvds_bridge.cfg \
            file://debloat.cfg \
@@ -35,10 +32,10 @@ SRC_URI = "git://github.com/raspberrypi/linux.git;name=machine;branch=${LINUX_RP
            file://default-cpu-governor.cfg \
            file://rpi4-nvmem.cfg \
            file://0001-ARM-dts-overlays-add-openvario-overlay.patch \
-           file://ov-cm4-ch70-overlay.dts;subdir=git/arch/arm/boot/dts/overlays \
-           file://ov-cm4-ch57-overlay.dts;subdir=git/arch/arm/boot/dts/overlays \
-           file://ov-cm4-pq70-overlay.dts;subdir=git/arch/arm/boot/dts/overlays \
-           file://ov-rpi4-ch57-overlay.dts;subdir=git/arch/arm/boot/dts/overlays \
+           file://ov-cm4-ch70-overlay.dts;subdir=${BB_GIT_DEFAULT_DESTSUFFIX}/arch/arm/boot/dts/overlays \
+           file://ov-cm4-ch57-overlay.dts;subdir=${BB_GIT_DEFAULT_DESTSUFFIX}/arch/arm/boot/dts/overlays \
+           file://ov-cm4-pq70-overlay.dts;subdir=${BB_GIT_DEFAULT_DESTSUFFIX}/arch/arm/boot/dts/overlays \
+           file://ov-rpi4-ch57-overlay.dts;subdir=${BB_GIT_DEFAULT_DESTSUFFIX}/arch/arm/boot/dts/overlays \
            "
 
 KCONFIG_MODE = "--alldefconfig"
