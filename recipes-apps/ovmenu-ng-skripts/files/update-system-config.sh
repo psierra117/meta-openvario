@@ -39,22 +39,26 @@ if [ -e "$HOME/recover_data/upgrade.cfg" ]; then
         echo "'data/OpenSoarData'is new and has to be filled..."  >> $DEBUG_LOG
       fi
       if [ ! -d $DATADIR/XCSoarData ]; then
-        mkdir -p $DATADIR/OpenSoarData
+        mkdir -p $DATADIR/XCSoarData
         echo "'data/XCSoarData'is new and has to be filled..."  >> $DEBUG_LOG
       fi
       file_count=$(find $HOME/.xcsoar -maxdepth 1 -type f | wc -l)
       if (( $file_count > 6 )); then
         /usr/bin/psplash-message "Restoring flight data..." 2>/dev/null || true
-        rsync -ruvtcE --progress $HOME/.xcsoar/* $DATADIR/OpenSoarData/ \
-                    --delete --exclude cache  --exclude logs
-        echo "rsync from .xcsoar to $DATADIR/OpenSoarData"  >> $DEBUG_LOG
-
-        rsync -ruvtcE --progress $HOME/.xcsoar/* $DATADIR/XCSoarData/ \
-                      --delete --exclude cache  --exclude logs
-        sync
-        echo "rsync from .xcsoar to $DATADIR/XCSoarData"  >> $DEBUG_LOG
+        # Remove the restored copy only after both transfers succeeded.
+        # Otherwise ~/.xcsoar keeps the image defaults, which ovmenu-ng
+        # seeds into the data partition without overwriting user files.
+        if rsync -ruvtcE --progress $HOME/.xcsoar/* $DATADIR/OpenSoarData/ \
+                    --delete --exclude cache  --exclude logs &&
+           rsync -ruvtcE --progress $HOME/.xcsoar/* $DATADIR/XCSoarData/ \
+                      --delete --exclude cache  --exclude logs; then
+          sync
+          echo "rsync from .xcsoar to $DATADIR/OpenSoarData and XCSoarData"  >> $DEBUG_LOG
+          rm -rvf $HOME/.xcsoar/*
+        else
+          echo "restore from .xcsoar failed; keeping $HOME/.xcsoar"  >> $DEBUG_LOG
+        fi
       fi
-      rm -rvf $HOME/.xcsoar/*
       if [ -d $HOME/.glider_club ]; then
         /usr/bin/psplash-message "Restoring flight data..." 2>/dev/null || true
         mkdir -p $DATADIR/.glider_club
