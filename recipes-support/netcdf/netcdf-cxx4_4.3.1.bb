@@ -7,12 +7,10 @@ LIC_FILES_CHKSUM = "file://COPYRIGHT;md5=7a265567ba44537b8d1ed8b406d4b25c"
 DEPENDS = "libnetcdf"
 
 SRC_URI = " \
-    https://github.com/Unidata/netcdf-cxx4/archive/refs/tags/v${PV}.tar.gz \
+    git://github.com/Unidata/netcdf-cxx4.git;protocol=https;nobranch=1;tag=v${PV} \
     file://0002-fix-ncgroup-array-delete.patch \
 "
-SRC_URI[sha256sum] = "e3fe3d2ec06c1c2772555bf1208d220aab5fee186d04bd265219b0bc7a978edc"
-
-S = "${UNPACKDIR}/netcdf-cxx4-${PV}"
+SRCREV = "f8882188267488ef801691e69ad072e3eb217ad8"
 
 # Autotools produces libnetcdf_c++4, matching OpenSoar's system-library path.
 # It also avoids CMake's unconditional HDF5 lookup for our classic-only build.

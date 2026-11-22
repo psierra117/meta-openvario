@@ -4,10 +4,9 @@ HOMEPAGE = "https://www.unidata.ucar.edu/software/netcdf/"
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://COPYRIGHT;md5=cbb22cd5ded182bbd11d88ea19479b58"
 
-SRC_URI = "https://github.com/Unidata/netcdf-c/archive/refs/tags/v${PV}.tar.gz"
-SRC_URI[sha256sum] = "ce160f9c1483b32d1ba8b7633d7984510259e4e439c48a218b95a023dc02fd4c"
-
-S = "${UNPACKDIR}/netcdf-c-${PV}"
+# GitHub archive tarballs are not stable (QA src-uri-bad); fetch the tag.
+SRC_URI = "git://github.com/Unidata/netcdf-c.git;protocol=https;nobranch=1;tag=v${PV}"
+SRCREV = "80c6d3fbe3ee5b80014b0078c17b737b7e14d80c"
 
 DEPENDS = "zlib"
 
