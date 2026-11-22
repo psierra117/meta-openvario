@@ -19,6 +19,8 @@ FONT = "${RECIPE_SYSROOT}/${datadir}/fonts/truetype/DejaVuSans.ttf"
 BOOT_TEXT = "Starting..."
 RECOVER_TEXT = "!!! Recovery !!!"
 
+S = "${UNPACKDIR}"
+
 SRC_URI = "\
 	file://${LOGO_FILE} \
 "

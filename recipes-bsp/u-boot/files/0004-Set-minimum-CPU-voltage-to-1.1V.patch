@@ -3,6 +3,8 @@ From: Torsten Beyer <tb@pobox.com>
 Date: Sun, 28 Aug 2022 20:04:45 +0200
 Subject: [PATCH] Set minimum CPU voltage to 1.1V
 
+Upstream-Status: Inappropriate [OpenVario specific]
+
 The cubieboard2 dev spec says minimum voltage for lower frequencies should be 1.0iV and 1.1V respectively. Usage of cubieboards in OpenVarion
 show instable behaviour with voltages of 1.0V. Hence this change increases CPU voltage to 1.1V for the lowest CPU speeds.
 ---

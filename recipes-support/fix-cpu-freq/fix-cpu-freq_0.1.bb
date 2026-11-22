@@ -17,6 +17,8 @@ RDEPENDS:${PN} = " \
         bash \
 "
 
+S = "${UNPACKDIR}"
+
 SRC_URI = " \
         file://fix_cpu_freq.service \
 	file://fix_cpu_freq.sh \

@@ -3,6 +3,8 @@ From: OpenEmbedded <oe.patch@oe>
 Date: Wed, 8 Apr 2026 15:46:24 +0000
 Subject: [PATCH] ARM: dts: overlays: add openvario overlay
 
+Upstream-Status: Inappropriate [OpenVario specific]
+
 ---
  arch/arm/boot/dts/overlays/Makefile | 5 ++++-
  1 file changed, 4 insertions(+), 1 deletion(-)

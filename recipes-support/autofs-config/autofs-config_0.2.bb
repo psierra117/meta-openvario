@@ -5,6 +5,8 @@ PR = "r1"
 
 inherit allarch systemd
 
+S = "${UNPACKDIR}"
+
 SRC_URI = "\
 	file://dev-sda1.device \
 	file://boot.mount \

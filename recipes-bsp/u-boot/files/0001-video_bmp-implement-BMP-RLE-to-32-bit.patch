@@ -3,6 +3,8 @@ From: Max Kellermann <max.kellermann@gmail.com>
 Date: Wed, 9 Feb 2022 17:55:27 +0100
 Subject: [PATCH] video_bmp: implement BMP-RLE to 32 bit
 
+Upstream-Status: Pending
+
 ---
  drivers/video/video_bmp.c | 130 ++++++++++++++++++++++++++++++++++++--
  1 file changed, 126 insertions(+), 4 deletions(-)
