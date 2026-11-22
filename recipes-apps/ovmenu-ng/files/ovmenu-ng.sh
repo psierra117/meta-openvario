@@ -15,6 +15,13 @@ trap "restore_app_tty; rm -f $INPUT; exit" SIGHUP SIGINT SIGTERM
 # Load boot config for main_app selection
 source /boot/config.uEnv
 
+# With KMS, XCSoar/OpenSoar leave touch coordinates unrotated by default and
+# expect the system to rotate them. The touch drivers report coordinates for
+# the default (landscape) orientation, so let the application rotate touch
+# input together with its own display orientation setting. A board that
+# rotates touch itself can set xcsoar_input_transform=system in config.uEnv.
+export XCSOAR_KMS_INPUT_TRANSFORM="${xcsoar_input_transform:-xcsoar}"
+
 #==============================================================================
 # Shared helpers (available to all sourced scripts)
 #==============================================================================
