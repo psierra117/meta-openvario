@@ -59,6 +59,8 @@ inherit pkgconfig
 
 addtask do_package_write_ipk after do_package
 
+# ICF (identical code folding) makes the build link with -fuse-ld=gold.
+# binutils in Wrynose no longer ships gold ("collect2: cannot find 'ld'").
 EXTRA_OEMAKE = " \
 	HOSTCC='${BUILD_CC}' \
 	HOSTCXX='${BUILD_CXX}' \
@@ -72,6 +74,7 @@ EXTRA_OEMAKE = " \
 	CCACHE='' \
 	\
 	DEBUG=n DEBUG_GLIBCXX=n \
+	ICF=n \
 	ENABLE_MESA_KMS=y GLES2=y \
 "
 
