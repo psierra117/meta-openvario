@@ -153,18 +153,6 @@ Devices whose touch driver already rotates coordinates can disable this in `/boo
 xcsoar_input_transform=system
 ```
 
-### Start menu
-
-When XCSoar or OpenSoar is closed, the start menu offers **OpenSoar**, **XCSoar**, **Terminal**,
-**Reboot** and **Shutdown**. Reboot and Shutdown ask for confirmation (default: No). All other settings
-are made inside XCSoar / OpenSoar.
-
-### Package feed
-
-`opkg` is configured for the architecture of the device (`cortexa72` on CM4, `cortexa7t2hf-neon` on
-Cubieboard2) and the feed `https://repo.openvario.de/feed-wrynose`. Packages built for Scarthgap are not
-compatible with OpenVario 6.
-
 ---
 
 ## Contributing
